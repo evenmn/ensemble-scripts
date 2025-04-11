@@ -58,7 +58,7 @@ hardware:
     truncation: null
     truncation_inv: null
     graph: n320_2p5k_7p10.pt
-    dataset: ERA5/aifs-od-an-oper-0001-mars-n320-2019-2023-6h-v6.zarr
+    dataset: IFS/aifs-od-an-oper-0001-mars-n320-2019-2023-6h-v6.zarr
     dataset_lam: MEPS/aifs-meps-2.5km-2020-2024-6h-v6.zarr
   accelerator: auto
   num_gpus_per_ensemble: 16

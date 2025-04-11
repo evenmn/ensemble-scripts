@@ -60,7 +60,7 @@ hardware:
     graph: cerra_n320_7p9.pt
     dataset_lam: /CERRA/cerra-rr-an-oper-0001-mars-5p5km-1984-2020-3h-v2-rmi.zarr
     dataset_lam_z: /CERRA/cerra-rr-an-oper-0001-mars-5p5km-1984-2020-3h-v2-z_sfc-rmi.zarr
-    dataset: ERA5/aifs-od-an-oper-0001-mars-n320-2019-2023-6h-v6.zarr
+    dataset: ERA5/aifs-ea-an-oper-0001-mars-n320-1979-2022-6h-v6.zarr
   accelerator: auto
   num_gpus_per_ensemble: 16
   num_gpus_per_node: ${oc.decode:${oc.env:SLURM_GPUS_PER_NODE}}
