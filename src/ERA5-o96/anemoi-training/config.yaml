@@ -63,9 +63,9 @@ dataloader:
         select: [lcc, mcc, hcc, tcc, strd, ssrd]
     adjust: [start, end]
   num_workers:
-    training: 1
-    validation: 1
-    test: 1
+    training: 4
+    validation: 4
+    test: 4
 
   limit_batches:
     training: null #50
