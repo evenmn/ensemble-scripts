@@ -1,64 +1,92 @@
-# Ensemble scripts
-This repo contains a bunch of scripts for training and running ensemble models within Anemoi. This includes configs and job scripts to run:
+# Ensemble Scripts for Anemoi
+
+This repository contains scripts for training and running ensemble models within [Anemoi](https://github.com/ecmwf/anemoi-core). It includes configuration files and job scripts compatible with the following components:
 
 - [`anemoi-training`](https://github.com/ecmwf/anemoi-core)
 - [`anemoi-inference`](https://github.com/ecmwf/anemoi-inference)
 - [`bris-inference`](https://github.com/metno/bris-inference)
 
-Most of the paths and jobscripts only make sense on the Leonardo supercomputer, but they can easily be adapted to similar systems.
+> ⚠️ **Note:** Most paths and job scripts are tailored for the **Leonardo supercomputer**, but they can be adapted for similar HPC environments.
 
-We currently offer configs on three grid configurations:
+---
 
-- ERA5-o96: Global model trained on ERA5, ~100km horizontal resolution
-- ERA5-N320: Global model trained on ERA5, ~31km horizontal resolution
-- ERA5-N320_CERRA-5p5km: Stretched-grid model with 5.5 km horizontal resolution over Europe and ~31km elsewhere
-- IFS-N320_MEPS-2p5km: Stretched-grid model with 2.5 km horizontal resolution over the Nordics and ~31km elsewhere
+## Supported Grid Configurations
 
-The folder structure is as follows:
+This repository includes setup for the following grid configurations:
 
-src
-├── hardware_leonardo.yaml
-├── hardware_lumi.yaml
-├── ERA5-N320
-│   ├── anemoi-training
-│   │   ├── config.yaml
-│   │   └── jobscript.sh
-│   └── bris-inference
-│       ├── config.yaml
-│       └── jobscript.sh
-├── ERA5-N320_CERRA-5p5km
-│   └── anemoi-training
-│       ├── config.yaml
-│       └── jobscript.sh
-├── ERA5-o96
-│   ├── anemoi-inference
-│   │   ├── config.yaml
-│   │   └── jobscript.sh
-│   ├── anemoi-training
-│   │   ├── config.yaml
-│   │   └── jobscript.sh
-│   └── bris-inference
-│       ├── config.yaml
-│       └── jobscript.sh
-└── IFS-N320_MEPS-2p5km
-    ├── anemoi-inference
-    │   ├── config.yaml
-    │   └── jobscript.sh
-    ├── anemoi-training
-    │   ├── config.yaml
-    │   └── jobscript.sh
-    └── bris-inference
-        ├── config.yaml
-        └── jobscript.sh
-README.md
+- **ERA5-o96**:  
+  Global model trained on ERA5 (~100 km horizontal resolution)
 
-Each inner folder comes with a config file, `config.yaml`, and a corresponding job script `jobscript.yaml`. You will need to change the paths, accounts and so on in both `jobscript.sh` and `config.yaml` before executing the job with
+- **ERA5-N320**:  
+  Global model trained on ERA5 (~31 km horizontal resolution)
+
+- **ERA5-N320_CERRA-5p5km**:  
+  Stretched-grid model with ~5.5 km resolution over Europe, ~31 km elsewhere
+
+- **IFS-N320_MEPS-2p5km**:  
+  Stretched-grid model with ~2.5 km resolution over the Nordics, ~31 km elsewhere
+
+---
+
+## Directory Structure
 
 ``` bash
+src/
+├── hardware_leonardo.yaml
+├── hardware_lumi.yaml
+├── ERA5-N320/
+│ ├── anemoi-training/
+│ │ ├── config.yaml
+│ │ └── jobscript.sh
+│ └── bris-inference/
+│ ├── config.yaml
+│ └── jobscript.sh
+├── ERA5-N320_CERRA-5p5km/
+│ └── anemoi-training/
+│ ├── config.yaml
+│ └── jobscript.sh
+├── ERA5-o96/
+│ ├── anemoi-inference/
+│ │ ├── config.yaml
+│ │ └── jobscript.sh
+│ ├── anemoi-training/
+│ │ ├── config.yaml
+│ │ └── jobscript.sh
+│ └── bris-inference/
+│ ├── config.yaml
+│ └── jobscript.sh
+└── IFS-N320_MEPS-2p5km/
+├── anemoi-inference/
+│ ├── config.yaml
+│ └── jobscript.sh
+├── anemoi-training/
+│ ├── config.yaml
+│ └── jobscript.sh
+└── bris-inference/
+├── config.yaml
+└── jobscript.sh
+```
+
+---
+
+
+## Usage
+
+Each configuration folder contains:
+
+- A YAML configuration file: `config.yaml`
+- A SLURM job script: `jobscript.sh`
+
+Before launching any job, **update the paths, user accounts, and resource allocations** in both files.
+
+To submit a job:
+
+```bash
 sbatch jobscript.sh
 ```
 
-The configs have been tested with the latest version anno 2025-08-07:
+## Verified Software Versions (as of 2025-08-07)
+These scripts were tested with the following versions:
 
 - `anemoi-training`: commit [b9d7726](https://github.com/ecmwf/anemoi-core/commit/b9d772659679b1d1744c9be6a6602673eb9e6969)
 - `anemoi-inference`: commit [0b0db28](https://github.com/ecmwf/anemoi-inference/commit/0b0db285bb049c7133a541cd04b053030163f7aa)
