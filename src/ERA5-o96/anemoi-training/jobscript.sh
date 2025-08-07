@@ -7,7 +7,7 @@
 #SBATCH --gpus-per-node=4
 #SBATCH --cpus-per-task=4
 #SBATCH --mem=0
-#SBATCH --time=24:00:00
+#SBATCH --time=01:00:00
 #SBATCH --job-name=ERA5-o96
 #SBATCH --output=logs/ERA5-o96.out
 set -x
