@@ -1,6 +1,6 @@
 paths:
   data: /leonardo_work/DestE_330_25/anemoi/datasets/
-  output: /leonardo_work/DestE_330_25/anemoi/experiments/
+  output: /leonardo_work/DestE_330_25/anemoi/experiments/ens/
   truncation: null
   logs:
     base: ${hardware.paths.output}logs/
@@ -21,3 +21,5 @@ files:
     every_n_minutes: anemoi-by_time-epoch_{epoch:03d}-step_{step:06d}
   warm_start: null
 accelerator: auto
+num_gpus_per_node: ${oc.decode:${oc.env:SLURM_GPUS_PER_NODE}}
+num_nodes: ${oc.decode:${oc.env:SLURM_NNODES}}
