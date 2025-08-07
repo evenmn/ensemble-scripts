@@ -1,0 +1,23 @@
+paths:
+  data: /leonardo_work/DestE_330_25/anemoi/datasets/
+  output: /leonardo_work/DestE_330_25/anemoi/experiments/
+  truncation: null
+  logs:
+    base: ${hardware.paths.output}logs/
+    wandb: ${hardware.paths.logs.base}
+    mlflow: ${hardware.paths.logs.base}mlflow/
+    tensorboard: ${hardware.paths.logs.base}tensorboard/
+  checkpoints: ${hardware.paths.output}checkpoint/
+  plots: ${hardware.paths.output}plots/
+  profiler: ${hardware.paths.output}profiler/
+  graph: ${hardware.paths.output}graphs/
+  warm_start: null
+files:
+  truncation: null
+  truncation_inv: null
+  checkpoint:
+    every_n_epochs: anemoi-by_epoch-epoch_{epoch:03d}-step_{step:06d}
+    every_n_train_steps: anemoi-by_step-epoch_{epoch:03d}-step_{step:06d}
+    every_n_minutes: anemoi-by_time-epoch_{epoch:03d}-step_{step:06d}
+  warm_start: null
+accelerator: auto

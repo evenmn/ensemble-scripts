@@ -1,0 +1,32 @@
+checkpoint: /leonardo_work/DestE_330_25/anemoi/experiments/ens/checkpoint/eca4f5b1-0eb5-46ad-b257-8323bd48f0dc/inference-last.ckpt
+
+runner: parallel
+
+#date: 2023-01-01T00
+lead_time: 120
+write_initial_state: True
+allow_nans: null
+
+ensemble:
+  loop:
+    number: 1/to/8
+
+input:
+  dataset:
+    cutout:
+      - dataset: /leonardo_work/DestE_330_25/anemoi/datasets/MEPS/aifs-meps-2.5km-2020-2023-6h-v7.zarr
+        reorder: sort
+      - dataset:
+          join:
+            - dataset: /leonardo_work/DestE_330_25/anemoi/datasets/IFS/aifs-od-an-oper-0001-mars-n320-2019-2023-6h-v6.zarr
+            - dataset: /leonardo_work/DestE_330_25/anemoi/datasets/ERA5/aifs-ea-an-oper-0001-mars-n320-1979-2023-6h-v1-land.zarr
+              select: [lcc, mcc, hcc, tcc, strd, ssrd]
+          adjust: [start, end]
+          drop: [sdor, slor, cp, u_600, v_600, w_600, q_600, z_600, t_600]
+        reorder: sort
+    adjust: all
+
+output:
+  extract_lam:
+    output:
+      netcdf: test_sg.nc

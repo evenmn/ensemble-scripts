@@ -1,0 +1,190 @@
+defaults:
+- data: zarr
+- dataloader: native_grid
+- datamodule: ens
+- diagnostics: evaluation
+- hardware: hardware_leonardo
+- graph: multi_scale
+- model: graphtransformer_ens
+- training: default
+- _self_
+
+config_validation: True
+
+data:
+  resolution: o96
+  forcing:
+    - lsm
+    - cos_julian_day
+    - cos_local_time
+    - cos_latitude
+    - cos_longitude
+    - sin_julian_day
+    - sin_local_time
+    - sin_latitude
+    - sin_longitude
+    - insolation
+    - z
+  diagnostic:
+    - tp
+  normalizer:
+    none:
+      - lsm
+      - cos_julian_day
+      - cos_local_time
+      - cos_latitude
+      - cos_longitude
+      - sin_julian_day
+      - sin_local_time
+      - sin_latitude
+      - sin_longitude
+      - insolation
+    max:
+      - z
+
+datamodule:
+  _target_: anemoi.training.data.datamodule.AnemoiEnsDatasetsDataModule
+
+hardware:
+  paths:
+    #truncation: /ec/res4/hpcperm/nesl/inter_mat
+    truncation: null
+    data: /leonardo_work/DestE_330_25/anemoi/datasets/
+    output: /leonardo_work/DestE_330_25/anemoi/experiments/
+    graph: /leonardo_work/DestE_330_25/anemoi/graphs/
+  files:
+    graph: o96_5.pt
+    dataset: ERA5/aifs-ea-an-oper-0001-mars-o96-1979-2022-6h-v6.zarr
+  num_gpus_per_ensemble: 2
+  num_gpus_per_node: ${oc.decode:${oc.env:SLURM_GPUS_PER_NODE}}
+  num_nodes: ${oc.decode:${oc.env:SLURM_NNODES}}
+  num_gpus_per_model: 1
+
+graph:
+  overwrite: True
+  data: "data"
+  hidden: "hidden"
+  nodes:
+    data:
+      node_builder:
+        _target_: anemoi.graphs.nodes.ZarrDatasetNodes
+        dataset: ${dataloader.dataset}
+    hidden:
+      node_builder:
+        _target_: anemoi.graphs.nodes.TriNodes
+        resolution: 5
+
+model:
+  output_mask: null
+  num_channels: 1024
+  trainable_parameters:
+    data: 0
+    hidden: 0
+    data2hidden: 0
+    hidden2data: 0
+    hidden2hidden: 0
+  processor:
+    num_noise_channels: 4
+  bounding:
+    - _target_: anemoi.models.layers.bounding.ReluBounding #[0, infinity)
+      variables:
+      - tp
+
+dataloader:
+  dataset: ${hardware.paths.data}${hardware.files.dataset}
+  drop: [u_600, v_600, z_600, t_600, q_600, slor, sdor, cp]
+  reorder: sort
+  adjust: all
+
+  num_workers:
+    training: 2
+    validation: 2
+    test: 2
+  batch_size:
+    training: 1
+    validation: 1
+    test: 1
+  limit_batches:
+    training: null #1967
+    validation: 10
+  training:
+    start: 1979-01-01
+    end: 2021-12-31
+  validation:
+    start: 2022-01-01
+    end: 2022-12-31
+  test:
+    start: 2022-01-01
+    end: 2022-12-31
+
+training:
+  fork_run_id: null
+  run_id: ERA5-o96
+  model_task: anemoi.training.train.forecaster.GraphEnsForecaster
+  strategy:
+    _target_: anemoi.training.distributed.strategy.DDPEnsGroupStrategy
+    num_gpus_per_ensemble: ${hardware.num_gpus_per_ensemble}
+    num_gpus_per_model: ${hardware.num_gpus_per_model}
+  ensemble_size_per_device: 1
+  max_epochs: 151
+  lr:
+    rate: 2.0e-5
+    iterations: 300000 # NOTE: When max_epochs < max_steps, scheduler will run for max_steps
+    min: 8.0e-6 #Not scaled by #GPU
+    warmup_t: 1000
+
+  precision: bf16-mixed
+
+  optimizer:
+    zero: False
+    kwargs:
+      weight_decay: 0.1
+      betas: [0.9, 0.95]
+      eps: 1e-7
+
+  pressure_level_scaler:
+    _target_: anemoi.training.data.scaling.ReluPressureLevelScaler
+    minimum: 0.2
+    slope: 0.001
+
+  # loss function for the model
+  training_loss:
+    # loss class to initialise, can be anything subclassing torch.nn.Module
+    _target_: anemoi.training.losses.kcrps.AlmostFairKernelCRPS
+    # other kwargs
+    scalars: ['variable']
+    ignore_nans: False
+    alpha: 0.95
+
+  validation_metrics:
+    # loss class to initialise, can be anything subclassing torch.nn.Module
+    - _target_: anemoi.training.losses.kcrps.KernelCRPS
+      # other kwargs
+      scalars: []
+      ignore_nans: False
+      fair: True
+    - _target_: anemoi.training.losses.kcrps.AlmostFairKernelCRPS
+      scalars: []
+      ignore_nans: False
+      alpha: 0.95
+    - _target_: anemoi.training.losses.kcrps.AlmostFairKernelCRPS
+      scalars: []
+      ignore_nans: False
+      alpha: 1.0
+
+diagnostics:
+  plot:
+    callbacks: []
+  log:
+    interval: 4
+    wandb:
+      entity: 'ecmwf'
+    mlflow:
+      enabled: False
+      offline: True
+      experiment_name: 'metno'
+      authentication: True
+      tracking_uri: 'https://mlflow.ecmwf.int'
+      run_name: 'cerra_ens'
+  profiler: False
+  enable_progress_bar: True

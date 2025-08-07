@@ -1,0 +1,31 @@
+checkpoint: /leonardo_work/DestE_330_25/anemoi/experiments/ens/checkpoint/e74932eb-8ecf-4216-992f-f203dbcab604/inference-last.ckpt
+
+runner: parallel
+
+lead_time: 72
+write_initial_state: True
+allow_nans: null
+
+input:
+  dataset:
+    join:
+      - dataset: /leonardo_work/DestE_340_25/ai-ml/datasets/aifs-ea-an-oper-0001-mars-o96-1979-2022-6h-v6.zarr
+        drop: [sdor, slor, cp, q_600, u_600, v_600, w_600, t_600, z_600]
+      - dataset: /leonardo_work/DestE_340_25/ai-ml/datasets/aifs-ea-an-oper-0001-mars-o96-1979-2023-6h-v3-land.zarr
+        select: ["lcc", "mcc", "hcc", "tcc", "strd", "ssrd"]
+    adjust: ["start", "end"]
+
+#output:
+#  grib: test.grib
+
+#output:
+#  netcdf: test_to_be_overwritten.nc
+
+output:
+  tee:
+    outputs:
+      - netcdf: netcdf/o96/pred_240t_2022-01-02T00.nc
+      - truth:
+          output:
+            netcdf:
+              path: netcdf/o96/ERA5_240t_2022-01-02T00.nc
