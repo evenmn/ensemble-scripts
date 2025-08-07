@@ -7,10 +7,6 @@ lead_time: 120
 write_initial_state: True
 allow_nans: null
 
-ensemble:
-  loop:
-    number: 1/to/8
-
 input:
   dataset:
     cutout:
@@ -26,7 +22,7 @@ input:
         reorder: sort
     adjust: all
 
-output:
-  extract_lam:
-    output:
-      netcdf: test_sg.nc
+#output:
+#  extract_lam:
+#    output:
+#      netcdf: test_sg.nc
