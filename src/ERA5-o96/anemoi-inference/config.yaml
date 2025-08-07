@@ -21,11 +21,11 @@ input:
 #output:
 #  netcdf: test_to_be_overwritten.nc
 
-output:
-  tee:
-    outputs:
-      - netcdf: netcdf/o96/pred_240t_2022-01-02T00.nc
-      - truth:
-          output:
-            netcdf:
-              path: netcdf/o96/ERA5_240t_2022-01-02T00.nc
+#output:
+#  tee:
+#    outputs:
+#      - netcdf: netcdf/o96/pred_240t_2022-01-02T00.nc
+#      - truth:
+#          output:
+#            netcdf:
+#              path: netcdf/o96/ERA5_240t_2022-01-02T00.nc
