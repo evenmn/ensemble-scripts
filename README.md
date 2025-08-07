@@ -34,37 +34,37 @@ This repository includes setup for the following grid configurations:
 src/
 ├── hardware_leonardo.yaml
 ├── hardware_lumi.yaml
-├── ERA5-N320/
-│ ├── anemoi-training/
-│ │ ├── config.yaml
-│ │ └── jobscript.sh
-│ └── bris-inference/
-│ ├── config.yaml
-│ └── jobscript.sh
-├── ERA5-N320_CERRA-5p5km/
-│ └── anemoi-training/
-│ ├── config.yaml
-│ └── jobscript.sh
-├── ERA5-o96/
-│ ├── anemoi-inference/
-│ │ ├── config.yaml
-│ │ └── jobscript.sh
-│ ├── anemoi-training/
-│ │ ├── config.yaml
-│ │ └── jobscript.sh
-│ └── bris-inference/
-│ ├── config.yaml
-│ └── jobscript.sh
-└── IFS-N320_MEPS-2p5km/
-├── anemoi-inference/
-│ ├── config.yaml
-│ └── jobscript.sh
-├── anemoi-training/
-│ ├── config.yaml
-│ └── jobscript.sh
-└── bris-inference/
-├── config.yaml
-└── jobscript.sh
+├── ERA5-o96
+│   ├── anemoi-inference
+│   │   ├── config.yaml
+│   │   └── jobscript.sh
+│   ├── anemoi-training
+│   │   ├── config.yaml
+│   │   └── jobscript.sh
+│   └── bris-inference
+│       ├── config.yaml
+│       └── jobscript.sh
+├── ERA5-N320
+│   ├── anemoi-training
+│   │   ├── config.yaml
+│   │   └── jobscript.sh
+│   └── bris-inference
+│       ├── config.yaml
+│       └── jobscript.sh
+├── ERA5-N320_CERRA-5p5km
+│   └── anemoi-training
+│       ├── config.yaml
+│       └── jobscript.sh
+└── IFS-N320_MEPS-2p5km
+    ├── anemoi-inference
+    │   ├── config.yaml
+    │   └── jobscript.sh
+    ├── anemoi-training
+    │   ├── config.yaml
+    │   └── jobscript.sh
+    └── bris-inference
+        ├── config.yaml
+        └── jobscript.sh
 ```
 
 ---
