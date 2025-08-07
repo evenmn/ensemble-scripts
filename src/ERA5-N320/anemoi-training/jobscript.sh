@@ -8,12 +8,12 @@
 #SBATCH --cpus-per-task=4
 #SBATCH --mem=0
 #SBATCH --time=24:00:00
-#SBATCH --job-name=ERA5-n320
-#SBATCH --output=logs/ERA5-n320_4.out
+#SBATCH --job-name=ERA5-N320
+#SBATCH --output=logs/ERA5-N320_1.out
 #SBATCH --dependency=singleton
 set -x
 
 export HYDRA_FULL_ERROR=1
-source /leonardo_work/DestE_330_25/enordhag/venv/bin/activate
+source /leonardo_work/DestE_330_25/enordhag/venvs/training/bin/activate
 
 srun anemoi-training train --config-name=config.yaml
