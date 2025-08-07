@@ -3,7 +3,7 @@ defaults:
 - dataloader: native_grid
 - diagnostics: evaluation
 - datamodule: ens
-- hardware: slurm
+- hardware: leonardo
 - graph: stretched_grid
 - model: graphtransformer_ens
 - training: ensemble
@@ -17,6 +17,7 @@ hydra:
     dir: .
   searchpath:
     - file:///leonardo_work/DestE_330_25/enordhag/anemoi-core/training/src/anemoi/training/config/
+    - file://../../
 
 data:
   frequency: 6h
@@ -57,22 +58,13 @@ data:
       - z
 
 hardware:
-  paths:
-    truncation: null
-    data: /leonardo_work/DestE_330_25/anemoi/datasets/
-    output: /leonardo_work/DestE_330_25/anemoi/experiments/ens/
-    graph: /leonardo_work/DestE_330_25/anemoi/graphs/
   files:
-    truncation: null
-    truncation_inv: null
     graph: n320_2p5k_7p10.pt
     dataset_atm: IFS/aifs-od-an-oper-0001-mars-n320-2019-2023-6h-v6.zarr
     dataset_land: ERA5/aifs-ea-an-oper-0001-mars-n320-1979-2023-6h-v1-land.zarr
     dataset_lam: MEPS/aifs-meps-2.5km-2020-2023-6h-v7.zarr
     dataset: ERA5/aifs-ea-an-oper-0001-mars-n320-1979-2023-6h-v1-land.zarr
   num_gpus_per_ensemble: 16
-  num_gpus_per_node: ${oc.decode:${oc.env:SLURM_GPUS_PER_NODE}}
-  num_nodes: ${oc.decode:${oc.env:SLURM_NNODES}}
   num_gpus_per_model: 8
 
 model:
@@ -132,13 +124,13 @@ graph:
   overwrite: False
 
 training:
-  fork_run_id: 315b7030-da27-4665-9517-0b78f9ba199f
+  fork_run_id: null #315b7030-da27-4665-9517-0b78f9ba199f
   run_id: null #73fe33fd-09bc-4a03-9bed-ca9bdc27fdb4 #eca4f5b1-0eb5-46ad-b257-8323bd48f0dc
   ensemble_size_per_device: 1
   max_epochs: null
   max_steps: 15000
-  load_weights_only: True
-  transfer_learning: True
+  load_weights_only: False #True
+  transfer_learning: False #True
   lr:
     rate: 5.0e-6
     min: 6.0e-6
