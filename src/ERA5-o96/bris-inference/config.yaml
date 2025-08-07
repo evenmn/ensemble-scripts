@@ -1,5 +1,6 @@
 start_date: 2022-05-31T18:00:00
-end_date: 2023-06-01T12:00:00
+#end_date: 2023-06-01T12:00:00
+end_date: 2022-07-01T12:00:00
 
 checkpoints:
   forecaster:
@@ -43,36 +44,36 @@ routing:
   - decoder_index: 0
     domain_index: 0
     outputs:
-      #- netcdf:
-      #    filename_pattern: /leonardo_work/DestE_330_25/enordhag/bris-inference/netcdf/o96_pred_%Y%m%dT%HZ.nc
-      #    variables: [2t, msl, tp, tcc]
-      #    extra_variables: [ws] #Compute wind speed from 10u and 10v
-      - verif:
-          filename: /leonardo_work/DestE_330_25/enordhag/bris-inference/verif/t2m/o96_at_ref_5d.nc
-          variable: 2t
-          units: degC
-          elev_gradient: -0.0065
-          obs_sources:
-            - verif:
-                filename: /leonardo_work/EUHPC_R04_079/bris/verification/nordic/6h/202206_202305/t2m/MEPS_2.5km.nc
-      - verif:
-          filename: /leonardo_work/DestE_330_25/enordhag/bris-inference/verif/ws10m/o96_at_ref_5d.nc
-          variable: ws
-          units: m/s
-          obs_sources:
-            - verif:
-                filename: /leonardo_work/EUHPC_R04_079/bris/verification/nordic/6h/202206_202305/ws10m/MEPS_2.5km.nc
-      - verif:
-          filename: /leonardo_work/DestE_330_25/enordhag/bris-inference/verif/mslp/o96_at_ref_5d.nc
-          variable: msl
-          units: hPa
-          obs_sources:
-            - verif:
-                filename: /leonardo_work/EUHPC_R04_079/bris/verification/nordic/6h/202206_202305/mslp/MEPS_2.5km.nc
-      - verif:
-          filename: /leonardo_work/DestE_330_25/enordhag/bris-inference/verif/precip6h/o96_at_ref_5d.nc
-          variable: tp
-          units: mm
-          obs_sources:
-            - verif:
-                filename: /leonardo_work/EUHPC_R04_079/bris/verification/nordic/6h/202206_202305/precip6h/MEPS_2.5km.nc
+      - netcdf:
+          filename_pattern: /leonardo_work/DestE_330_25/enordhag/bris-inference/netcdf/o96_pred_%Y%m%dT%HZ.nc
+          variables: [2t, msl, tp, tcc]
+          extra_variables: [ws] #Compute wind speed from 10u and 10v
+      #- verif:
+      #    filename: /leonardo_work/DestE_330_25/enordhag/bris-inference/verif/t2m/o96_at_ref_5d.nc
+      #    variable: 2t
+      #    units: degC
+      #    elev_gradient: -0.0065
+      #    obs_sources:
+      #     - verif:
+      #          filename: /leonardo_work/EUHPC_R04_079/bris/verification/nordic/6h/202206_202305/t2m/MEPS_2.5km.nc
+      #- verif:
+      #    filename: /leonardo_work/DestE_330_25/enordhag/bris-inference/verif/ws10m/o96_at_ref_5d.nc
+      #    variable: ws
+      #    units: m/s
+      #    obs_sources:
+      #      - verif:
+      #          filename: /leonardo_work/EUHPC_R04_079/bris/verification/nordic/6h/202206_202305/ws10m/MEPS_2.5km.nc
+      #- verif:
+      #    filename: /leonardo_work/DestE_330_25/enordhag/bris-inference/verif/mslp/o96_at_ref_5d.nc
+      #    variable: msl
+      #    units: hPa
+      #    obs_sources:
+      #      - verif:
+      #          filename: /leonardo_work/EUHPC_R04_079/bris/verification/nordic/6h/202206_202305/mslp/MEPS_2.5km.nc
+      #- verif:
+      #    filename: /leonardo_work/DestE_330_25/enordhag/bris-inference/verif/precip6h/o96_at_ref_5d.nc
+      #    variable: tp
+      #    units: mm
+      #    obs_sources:
+      #      - verif:
+      #          filename: /leonardo_work/EUHPC_R04_079/bris/verification/nordic/6h/202206_202305/precip6h/MEPS_2.5km.nc
