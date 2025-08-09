@@ -68,8 +68,8 @@ dataloader:
     test: 4
 
   limit_batches:
-    training: null #50
-    validation: null #20
+    training: null
+    validation: null
     test: null
 
   prefetch_factor: 2
@@ -101,7 +101,7 @@ diagnostics:
     callbacks: []
   log:
     mlflow:
-      enabled: False
+      enabled: True
       offline: True
       authentication: True
       tracking_uri: https://mlflow.ecmwf.int
@@ -121,10 +121,6 @@ diagnostics:
       num_models_saved: 1
  
 hardware:
-  #paths:
-  #  data: /leonardo_work/DestE_340_25/ai-ml/datasets/
-  #  output: /leonardo_work/DestE_330_25/anemoi/experiments/ens/
-  #  graph: /leonardo_work/DestE_330_25/anemoi/graphs/
   files:
     dataset_atm: ERA5/aifs-ea-an-oper-0001-mars-o96-1979-2022-6h-v6.zarr
     dataset_land: ERA5/aifs-ea-an-oper-0001-mars-o96-1979-2023-6h-v3-land.zarr
@@ -162,17 +158,12 @@ training:
   #run_id: f2053544-50a2-4cd6-8b09-97286c1efc96
   max_epochs: null
   ensemble_size_per_device: 1
-  max_steps: 150000 #1000
+  max_steps: 150000
   load_weights_only: False #True
   transfer_learning: False #True
   lr:
-    rate: 1.0e-4 #6.25e-5
-    min: 6.0e-6 #3e-7
+    rate: 1.0e-4
+    min: 6.0e-6
     warmup: 1000
   training_loss:
     alpha: 0.95
-  #scalers:
-  #  stdev_tendency:
-  #    _target_: anemoi.training.losses.scalers.NoTendencyScaler
-  #  var_tendency:
-  #    _target_: anemoi.training.losses.scalers.NoTendencyScaler
