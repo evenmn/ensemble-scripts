@@ -1,19 +1,16 @@
-# make repo dir
+# make repo dir and cloen repos
 mkdir repos
-cd repos
 
-# clone repos
-git clone git@github.com:ecmwf/anemoi-utils.git
-git clone git@github.com:ecmwf/anemoi-datasets.git
-git clone git@github.com:ecmwf/anemoi-core.git
-git clone git@github.com:ecmwf/anemoi-inference.git
-git clone git@github.com:metno/bris-inference.git
+git clone git@github.com:ecmwf/anemoi-utils.git repos/anemoi-utils
+git clone git@github.com:ecmwf/anemoi-datasets.git repos/anemoi-datasets
+git clone git@github.com:ecmwf/anemoi-core.git repos/anemoi-core
+git clone git@github.com:ecmwf/anemoi-inference.git repos/anemoi-inference
+git clone git@github.com:metno/bris-inference.git repos/bris-inference
 
 # create python environment named "anemoi"
-cd ..
 mkdir venvs
 python3 -m venv venvs/anemoi
-source venvs/bris/bin/activate
+source venvs/anemoi/bin/activate
 
 # install requirements
 pip install repos/anemoi-utils
