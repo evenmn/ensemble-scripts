@@ -5,12 +5,12 @@ defaults:
   
 start_date: 2022-05-31T00:00:00
 end_date: 2022-07-01T18:00:00
-#end_date: 2023-05-31T18:00:00
+#end_date: 2023-06-01T18:00:00
 
 checkpoints:
   forecaster:
-    checkpoint_path: /leonardo_work/DestE_330_25/anemoi/experiments/ens/checkpoint/eca4f5b1-0eb5-46ad-b257-8323bd48f0dc/inference-last.ckpt
-    leadtimes: 120
+    checkpoint_path: /leonardo_work/DestE_330_25/anemoi/experiments/ens/checkpoint/9fa481ffc3cd457180ee87a2778eb664/inference-last.ckpt
+    leadtimes: 40
     static_forcings_dataset: null
     switch_graph: null
 
@@ -31,13 +31,6 @@ dataset:
         drop: ["sdor", "slor", "cp", "u_600", "v_600", "z_600", "t_600", "q_600", "w_600"]
       reorder: sort
   adjust: all
-
-# If the user wants to release GPU cache and memory
-# This option releases unused cached/memory used by torch
-#release_cache: False
-
-# Determine how much the encoder and decoder is chunked
-#inference_num_chunks: 16
 
 dataloader:
   batch_size: 1
@@ -64,8 +57,6 @@ hardware:
   num_gpus_per_model: 4
   num_members: 10
   num_nodes: ${oc.decode:${oc.env:SLURM_NNODES}}
-  #multistep_input: 2
-  #ensemble_size_per_device: 1
 
 model:
   _target_: bris.model.brispredictor.BrisPredictor
@@ -80,7 +71,7 @@ routing:
           variables: [2t, msl, tp, lcc, mcc, hcc, tcc] 
           extra_variables: [ws]
       #- verif:
-      #    filename: /leonardo_work/DestE_330_25/enordhag/bris-inference/verif/2t/meps_at_ref_5d.nc
+      #    filename: /leonardo_work/EUHPC_R04_079/bris/verification/ens/6h/202206_202305/t2m/meps_at_ref_10d.nc
       #    variable: 2t
       #    units: degC
       #    elev_gradient: -0.0065
@@ -88,21 +79,21 @@ routing:
       #      - verif:
       #          filename: /leonardo_work/EUHPC_R04_079/bris/verification/nordic/6h/202206_202305/t2m/MEPS_2.5km.nc
       #- verif:
-      #    filename: /leonardo_work/DestE_330_25/enordhag/bris-inference/verif/ws/meps_at_ref_5d.nc
+      #    filename: /leonardo_work/EUHPC_R04_079/bris/verification/ens/6h/202206_202305/ws10m/meps_at_ref_10d.nc
       #    variable: ws
       #    units: m/s
       #    obs_sources:
       #      - verif:
       #          filename: /leonardo_work/EUHPC_R04_079/bris/verification/nordic/6h/202206_202305/ws10m/MEPS_2.5km.nc
       #- verif:
-      #    filename: /leonardo_work/DestE_330_25/enordhag/bris-inference/verif/mslp/meps_at_ref_5d.nc
+      #    filename: /leonardo_work/EUHPC_R04_079/bris/verification/ens/6h/202206_202305/mslp/meps_at_ref_10d.nc
       #    variable: msl
       #    units: hPa
       #    obs_sources:
       #      - verif:
       #          filename: /leonardo_work/EUHPC_R04_079/bris/verification/nordic/6h/202206_202305/mslp/MEPS_2.5km.nc
       #- verif:
-      #    filename: /leonardo_work/DestE_330_25/enordhag/bris-inference/verif/precip6h/meps_at_ref_5d.nc
+      #    filename: /leonardo_work/EUHPC_R04_079/bris/verification/ens/6h/202206_202305/precip6h/meps_at_ref_10d.nc
       #    variable: tp
       #    units: mm
       #    obs_sources:
