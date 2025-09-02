@@ -81,12 +81,19 @@ model:
         - lcc
       min_val: 0
       max_val: 1
+  trainable_parameters:
+    data: 0
+    hidden: 0
+    data2hidden: 0
+    hidden2data: 0
+    hidden2hidden: 0
 
 dataloader:
   dataset:
     cutout:
       - dataset: ${hardware.paths.data}/${hardware.files.dataset_lam}
         reorder: sort
+        trim_edge: 50
       - dataset:
           join:
             - dataset: ${hardware.paths.data}/${hardware.files.dataset_atm}
@@ -106,43 +113,51 @@ dataloader:
     validation: 1
     test: 1
   limit_batches:
-    training: 132
-    validation: 10
+    training: null
+    validation: null
   training:
     start: 2020-01-01
-    end: 2022-12-31
-    select: ['10u', '10v', '2d', '2t', 'cos_julian_day', 'cos_latitude', 'cos_local_time', 'cos_longitude', 'hcc', 'insolation', 'lcc', 'lsm', 'mcc', 'msl', 'q_100', 'q_1000', 'q_150', 'q_200', 'q_250', 'q_300', 'q_400', 'q_50', 'q_500', 'q_700', 'q_850', 'q_925', 'sin_julian_day', 'sin_latitude', 'sin_local_time', 'sin_longitude', 'skt', 'sp', 'ssrd', 'strd', 't_100', 't_1000', 't_150', 't_200', 't_250', 't_300', 't_400', 't_50', 't_500', 't_700', 't_850', 't_925', 'tcc', 'tcw', 'tp', 'u_100', 'u_1000', 'u_150', 'u_200', 'u_250', 'u_300', 'u_400', 'u_50', 'u_500', 'u_700', 'u_850', 'u_925', 'v_100', 'v_1000', 'v_150', 'v_200', 'v_250', 'v_300', 'v_400', 'v_50', 'v_500', 'v_700', 'v_850', 'v_925', 'w_100', 'w_1000', 'w_150', 'w_200', 'w_250', 'w_300', 'w_400', 'w_50', 'w_500', 'w_700', 'w_850', 'w_925', 'z', 'z_100', 'z_1000', 'z_150', 'z_200', 'z_250', 'z_300', 'z_400', 'z_50', 'z_500', 'z_700', 'z_850', 'z_925']
+    end: 2022-05-31
+    select: [10u, 10v, 2d, 2t, cos_julian_day, cos_latitude, cos_local_time, cos_longitude, hcc, insolation, lcc, lsm, mcc, msl, q_100, q_1000, q_150, q_200, q_250, q_300, q_400, q_50, q_500, q_700, q_850, q_925, sin_julian_day, sin_latitude, sin_local_time, sin_longitude, skt, sp, ssrd, strd, t_100, t_1000, t_150, t_200, t_250, t_300, t_400, t_50, t_500, t_700, t_850, t_925, tcc, tcw, tp, u_100, u_1000, u_150, u_200, u_250, u_300, u_400, u_50, u_500, u_700, u_850, u_925, v_100, v_1000, v_150, v_200, v_250, v_300, v_400, v_50, v_500, v_700, v_850, v_925, w_100, w_1000, w_150, w_200, w_250, w_300, w_400, w_50, w_500, w_700, w_850, w_925, z, z_100, z_1000, z_150, z_200, z_250, z_300, z_400, z_50, z_500, z_700, z_850, z_925]
     reorder: sort
   validation:
-    start: 2023-01-01
+    start: 2022-06-01
     end: 2023-12-31
   test:
-    start: 2023-01-01
+    start: 2022-06-01
     end: 2023-12-31
 
 graph:
-  overwrite: False
+  overwrite: True
+  nodes:
+    hidden:
+      node_builder:
+        lam_resolution: 10
+        global_resolution: 7
+        margin_radius_km: 11
+
 
 training:
-  fork_run_id: null #315b7030-da27-4665-9517-0b78f9ba199f
-  run_id: null #73fe33fd-09bc-4a03-9bed-ca9bdc27fdb4 #eca4f5b1-0eb5-46ad-b257-8323bd48f0dc
+  fork_run_id: a7390afe-cbd8-4bea-b375-8411f39cfee3 #a8e8cf790d5b48f5bdfb9a1be7028c65
+  run_id: #35927b18-4eb3-4c18-8b15-a0dfd48224c4 #3d61738c-3eb1-4651-9a00-60145492bd15
   ensemble_size_per_device: 1
   max_epochs: null
-  max_steps: 15000
-  load_weights_only: False #True
-  transfer_learning: False #True
+  max_steps: 30000
+  load_weights_only: True #False
+  transfer_learning: True #False
   lr:
-    rate: 5.0e-6
+    rate: 1.0e-5 #5.0e-6
     min: 6.0e-6
     warmup: 1000
   training_loss:
     alpha: 0.95
+  rollout:
+    start: 1 #2
+    epoch_increment: 0
+    max: 1 #2
   #scalers:
-  #  stdev_tendency:
-  #    _target_: anemoi.training.losses.scalers.NoTendencyScaler
-  #  var_tendency:
-  #    _target_: anemoi.training.losses.scalers.NoTendencyScaler
-
+  #  node_weights:
+  #    weight_frac_of_total: 0.23
 
 diagnostics:
   plot:
@@ -152,16 +167,18 @@ diagnostics:
     wandb:
       entity: null
     mlflow:
-      enabled: False
+      enabled: False #True
       offline: True
       authentication: False
-      experiment_name: 'metno'
-      tracking_uri: 'https://mlflow.ecmwf.int'
-      run_name: 'ens_test'
+      experiment_name: metno
+      tracking_uri: https://mlflow.ecmwf.int
+      run_name: ens_test
   checkpoint:
     every_n_minutes:
-      save_frequency: null
+      save_frequency: 30
       num_models_saved: 1
     every_n_epochs:
       save_frequency: 1
       num_models_saved: 1
+    every_n_train_steps:
+      save_frequency: 100
