@@ -3,10 +3,9 @@ defaults:
 - dataloader: native_grid
 - diagnostics: evaluation_ens
 - system: slurm
-- graph: multi_scale_refiner_knnenc
-- model: graphtransformer_ens_refiner
+- graph: multi_scale
+- model: graphtransformer_ens
 - training: ensemble
-- override /graph/projections/multiscale@_global_.graph.projections.multiscale: 4scale_o96
 - _self_
 
 config_validation: False
@@ -31,8 +30,8 @@ system:
     root: /leonardo_work/EUHPC_R06_263/hhaugen/multi_scale_refiner/output/
   hardware:
     accelerator: auto
-    num_gpus_per_ensemble: 4
-    num_gpus_per_model: 2
+    num_gpus_per_ensemble: 4  # ensemble parallelism
+    num_gpus_per_model: 2     # model sharding
 
 graph: 
   overwrite: False
@@ -75,13 +74,6 @@ dataloader:
 
 model:
   num_channels: 1024
-  attributes:
-    edges:
-      - edge_length
-      - edge_dirs
-      - dir_harmonics
-      - rbf_features
-    nodes: []
   bounding:
   - _target_: anemoi.models.layers.bounding.ReluBounding
     variables:
@@ -120,6 +112,12 @@ model:
     data2hidden: 0
     hidden2hidden: 0
     hidden2data: 0
+  processor:
+    num_chunks: 4
+  encoder:
+    num_chunks: 4
+  decoder:
+    num_chunks: 4
 
 data:
   datasets:
@@ -182,19 +180,9 @@ training:
     iterations: ${training.max_steps}
     min: 0
   ensemble_size_per_device: 1
-  max_steps: 100000
+  max_steps: 150000
 
-  run_id: 4c995bf7281244bcbf328e0ab4caea80 #null
-  
-  training_loss:
-    datasets:
-      data:
-        weights: [1.0, 1.0, 1.0, 1.0, 1.0]
-  validation_metrics:
-    datasets:
-      data:
-        multiscale:
-          weights: [1.0, 1.0, 1.0, 1.0, 1.0]
+  run_id: null
   
   metrics:
     datasets:
