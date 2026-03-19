@@ -114,6 +114,7 @@ model:
     hidden2data: 0
   processor:
     num_chunks: 4
+    num_noise_channels: 4
   encoder:
     num_chunks: 4
   decoder:
