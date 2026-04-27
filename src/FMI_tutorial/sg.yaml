@@ -163,7 +163,7 @@ training:
         - _target_: anemoi.training.losses.SpectralCRPSLoss
           alpha: 0.95
           transform: 'fft2d'
-          apply_filter: True
+          apply_filter: False
           x_dim: 849
           y_dim: 969
           scalers: ['pressure_level', 'general_variable', 'nan_mask_weights']
