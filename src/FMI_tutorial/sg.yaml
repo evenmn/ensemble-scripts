@@ -93,11 +93,11 @@ model:
     hidden2data: 0
     hidden2hidden: 0
   processor:
-    num_chunks: 4
+    num_chunks: 16
   encoder:
-    num_chunks: 4
+    num_chunks: 16
   decoder:
-    num_chunks: 4
+    num_chunks: 16
 
 
 dataloader:
@@ -147,11 +147,11 @@ training:
   run_id: null
   ensemble_size_per_device: 1
   max_epochs: null
-  max_steps: 10000 # 10000 r1, 1000 r2
+  max_steps: 20000 # 10000 r1, 1000 r2
   load_weights_only: False #True
   transfer_learning: False #True
   lr:
-    rate: 3.75e-5  # 3.75e-5 r1, 3.75e-6 r2
+    rate: 1.25e-5  # 3.75e-5 r1, 3.75e-6 r2
     min: 8.0e-6
     warmup: 1000  # 1000 r1, 100 r2
   training_loss:
