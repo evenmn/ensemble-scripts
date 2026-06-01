@@ -166,6 +166,7 @@ training:
           apply_filter: False
           x_dim: 849
           y_dim: 969
+          nodes_slice: [0, 822681]
           scalers: ['pressure_level', 'general_variable', 'nan_mask_weights']
     scalers: ['*']
     loss_weights: [1.0, 0.1]
